@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 /* Anslut till databas (mongodb) */
@@ -23,13 +24,13 @@ router.post('/register', async (req, res) => {
 
         /* Validering */
         if (!username || !password ){ 
-            return res.status(400).json({ error: 'Invalid input, send username and password'});
+            return res.status(400).json({ error: 'Fel inmatning, skicka användarnamn och lösenord'});
         }
 
         /* Spara användare */
         const user = new User({ username, password});
         await user.save();
-        res.status(201).json({ message: 'User created'})
+        res.status(201).json({ message: 'Användare skapad'})
 
     } catch (error) {
         res.status(500).json({ error: 'Server error' + error});
@@ -43,7 +44,7 @@ router.post('/login', async (req, res) => {
 
         /* Validering */
         if (!username || !password ){ 
-            return res.status(400).json({ error: 'Invalid input, send username and password'});
+            return res.status(400).json({ error: 'Fel inmatning, skicka användarnamn och lösenord'});
         }
 
         /* Kontrollera om användare existerar */
@@ -56,7 +57,11 @@ router.post('/login', async (req, res) => {
         if(!isPasswordMatch) {
             return res.status(401).json({ error:'Fel användarnamn/lösenord'})
         } else {
-            res.status(200).json({ message: 'User logged in!'})
+            /* Skapa JWT */
+            const payload = { username: username};
+            const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1h'})
+            const response = { message: 'Användare inloggad', token: token};
+            res.status(200).json({ response});
         }
 
     } catch (error) {
