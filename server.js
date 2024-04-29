@@ -4,10 +4,11 @@ const bodyParser = require('body-parser');
 const authRoutes = require('./routes/authRoutes');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
+const cors = require('cors');
+app.use(cors());
 
 /* Routes */
 app.use('/api', authRoutes);
@@ -16,6 +17,12 @@ app.use('/api', authRoutes);
 app.get('/api/protected', authenticateToken, (req, res) => {
     res.json({ message: 'Skyddad route'})
 })
+
+app.get('/home.html', authenticateToken, (req, res) => {
+    res.sendFile(__dirname + '/home.html')
+})
+
+
 
 /* Validera token */
 function authenticateToken(req, res, next) {

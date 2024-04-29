@@ -1,9 +1,13 @@
 /* Routes for auth */
 const express = require('express');
+const app = express();
 const router = express.Router();
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const cors = require('cors');
+app.use(cors());
+
 
 /* Anslut till databas (mongodb) */
 mongoose.set('strictQuery', false);
