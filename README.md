@@ -25,4 +25,6 @@ Det här API-projektet är en backend-applikation för att hantera användaraute
 - `PORT`: Porten som servern ska lyssna på.
 - `DATABASE`: Adress till MongoDB-databasen.
 - `JWT_SECRET_KEY`: Hemlig nyckel för att signera och verifiera JWT.
+
+  
 [Webbplats](https://friendly-zuccutto-5b42bc.netlify.app/)
