@@ -14,15 +14,9 @@ app.use(cors());
 app.use('/api', authRoutes);
 
 /* Skyddad route */
-app.get('/api/protected', authenticateToken, (req, res) => {
-    res.json({ message: 'Skyddad route'})
+app.get('/api/check-auth', authenticateToken, (req, res) => {
+    res.status(200).json({ message: 'Autentisering lyckades' });
 })
-
-app.get('/home.html', authenticateToken, (req, res) => {
-    res.sendFile(__dirname + '/home.html')
-})
-
-
 
 /* Validera token */
 function authenticateToken(req, res, next) {
@@ -32,13 +26,12 @@ function authenticateToken(req, res, next) {
     if (token == null) return res.status(401).json({error: 'Du har inte behörighet för detta, token saknas.'})
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, username) => {
-        if(err) return res.status(403).json({ error: 'Ogiltig JWT'});
+        if(err) return res.status(401).json({ error: 'Ogiltig JWT'});
 
         req.username = username;
         next();
     })
 }
-
 
 /* Lyssna på port */
 app.listen(port, () => {

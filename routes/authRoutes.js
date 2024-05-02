@@ -8,18 +8,16 @@ require('dotenv').config();
 const cors = require('cors');
 app.use(cors());
 
-
 /* Anslut till databas (mongodb) */
 mongoose.set('strictQuery', false);
 mongoose.connect(process.env.DATABASE).then(() => {
     console.log('Connected to MongoDB')
 }).catch((error) => {
-    console.log(`Failed to connect to database: ${error}`);
+    console.log('Failed to connect to database', error);
 });
 
 /* User model */
 const User = require('../models/User');
-
 
 /* Lägg till användare */
 router.post('/register', async (req, res) => {
@@ -57,11 +55,12 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Fel användarnamn/lösenord'})
         }
 
+        /* Jämför om input-lösenord passar med databasen */
         const isPasswordMatch = await user.comparePassword(password);
         if(!isPasswordMatch) {
             return res.status(401).json({ error:'Fel användarnamn/lösenord'})
         } else {
-            /* Skapa JWT */
+            /* Skapa JWT om rätt lösenord är inmatat */
             const payload = { username: username};
             const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1h'})
             const response = { message: 'Användare inloggad', token: token};
