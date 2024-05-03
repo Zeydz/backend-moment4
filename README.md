@@ -1,4 +1,4 @@
-# API-projekt README
+# API-projekt
 
 ## Beskrivning
 Det här API-projektet är en backend-applikation för att hantera användarautentisering och autentisering via JSON Web Tokens (JWT). Det tillåter användare att registrera sig, logga in och få åtkomst till skyddade resurser efter autentisering.
