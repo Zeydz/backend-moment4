@@ -21,7 +21,19 @@ Det här API-projektet är en backend-applikation för att hantera användaraute
 - `/api/login`: POST-förfrågan för att logga in och få en JWT.
 - `/api/check-auth`: GET-förfrågan till en skyddad resurs som kräver giltig JWT-autentisering.
 
+## Struktur
+För att logga in/registrera används följande struktur:
+```
+{
+   "username": "namn",
+   "password": "lösenord"
+}
+```
+
 ## Miljövariabler
 - `PORT`: Porten som servern ska lyssna på.
 - `DATABASE`: Adress till MongoDB-databasen.
 - `JWT_SECRET_KEY`: Hemlig nyckel för att signera och verifiera JWT.
+
+  
+[Webbplats](https://friendly-zuccutto-5b42bc.netlify.app/)
