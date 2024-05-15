@@ -15,7 +15,10 @@ app.use('/api', authRoutes);
 
 /* Skyddad route */
 app.get('/api/check-auth', authenticateToken, (req, res) => {
-    res.status(200).json({ message: 'Autentisering lyckades' });
+
+    const username = req.username;
+
+    res.status(200).json({ username: username });
 })
 
 /* Validera token */
